@@ -1,1 +1,1 @@
-export * from './RaidCommand';
+export * from './raid.command';

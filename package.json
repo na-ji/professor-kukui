@@ -10,10 +10,12 @@
   "dependencies": {
     "discord.js": "^11.3.2",
     "discord.js-commando": "^0.10.0",
-    "dotenv": "^6.0.0"
+    "dotenv": "^6.0.0",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
     "@types/dotenv": "^4.0.3",
+    "@types/moment": "^2.13.0",
     "@types/node": "^10.5.5",
     "husky": "^1.0.0-rc.13",
     "lint-staged": "^7.2.0",
