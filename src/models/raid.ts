@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { Snowflake, Message, User } from 'discord.js';
+import Discord, { Snowflake, Message, RichEmbed } from 'discord.js';
+import { Participant } from './participant';
 
 export enum RaidLevel {
   LEVEL_1 = 1,
@@ -16,8 +17,7 @@ export class Raid {
   public endAt: Date;
   public messagesIds: Snowflake[] = [];
   public messages: Message[] = [];
-  public membersIds: Snowflake[] = [];
-  public members: User[] = [];
+  public participants: Participant[] = [];
 
   constructor(gym: string, level: RaidLevel, duration: number) {
     this.gym = gym;
@@ -26,5 +26,31 @@ export class Raid {
     this.endAt = moment(this.startAt)
       .add(duration, 'minutes')
       .toDate();
+  }
+
+  createSummary(): RichEmbed {
+    const embed = new Discord.RichEmbed()
+      .setTitle(`Raid ${this.level}T ${this.gym}`)
+      .setDescription('Yolo')
+      .setURL('https://discord.js.org/#/docs/main/indev/class/RichEmbed');
+
+    let participantsList = '';
+    for (let participant of this.participants) {
+      participantsList += `${participant.getParticipation()}\n`;
+    }
+
+    embed.addField(
+      `${this.participants.length} Participants`,
+      participantsList
+    );
+
+    return embed;
+  }
+
+  addMessage(message: Message): Raid {
+    this.messagesIds.push(message.id);
+    this.messages.push(message);
+
+    return this;
   }
 }
