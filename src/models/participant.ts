@@ -6,6 +6,17 @@ export class Participant {
   public numberOfAccounts: number = 1;
   public numberOfTurns: number = 1;
 
+  constructor(
+    user: User,
+    numberOfAccounts: number = 1,
+    numberOfTurns: number = 1
+  ) {
+    this.user = user;
+    this.userId = user.id;
+    this.numberOfAccounts = numberOfAccounts;
+    this.numberOfTurns = numberOfTurns;
+  }
+
   public getParticipation(): string {
     let participation = `${this.user.username}`;
 

@@ -2,6 +2,8 @@ import { CommandoClient } from 'discord.js-commando';
 import { config as dotenvInit } from 'dotenv';
 
 import * as commands from './commands';
+import RaidManager from './raids-manager';
+import { TextChannel } from 'discord.js';
 
 dotenvInit();
 
@@ -21,7 +23,13 @@ client.registry
 client.on('ready', () => {
   console.log('Ready!');
 
+  const guild = client.guilds.get(process.env.GUILD_ID);
+  const channel = guild.channels.get(process.env.CHANNEL_ID) as TextChannel;
+
   client.user.setActivity('Coding...');
+  RaidManager.client = client;
+  RaidManager.guild = guild;
+  RaidManager.channel = channel;
 });
 
 client.login(process.env.BOT_TOKEN);

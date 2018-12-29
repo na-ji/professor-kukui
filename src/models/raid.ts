@@ -15,8 +15,7 @@ export class Raid {
   public level: RaidLevel;
   public startAt: Date;
   public endAt: Date;
-  public messagesIds: Snowflake[] = [];
-  public messages: Message[] = [];
+  public messages: Map<Snowflake, Message> = new Map();
   public participants: Participant[] = [];
 
   constructor(gym: string, level: RaidLevel, duration: number) {
@@ -35,22 +34,29 @@ export class Raid {
       .setURL('https://discord.js.org/#/docs/main/indev/class/RichEmbed');
 
     let participantsList = '';
+    let numberOfParticipants = 0;
+
     for (let participant of this.participants) {
+      numberOfParticipants += participant.numberOfAccounts;
       participantsList += `${participant.getParticipation()}\n`;
     }
 
-    embed.addField(
-      `${this.participants.length} Participants`,
-      participantsList
-    );
+    if (participantsList.length === 0) {
+      participantsList = 'None';
+    }
+
+    embed.addField(`${numberOfParticipants} Participants`, participantsList);
 
     return embed;
   }
 
   addMessage(message: Message): Raid {
-    this.messagesIds.push(message.id);
-    this.messages.push(message);
+    this.messages.set(message.id, message);
 
     return this;
+  }
+
+  addParticipant(participant: Participant) {
+    this.participants.push(participant);
   }
 }
